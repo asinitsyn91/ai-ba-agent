@@ -4,10 +4,277 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI-ba-agent — Бизнес-аналитик</title>
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f1117; color: #e2e8f0; min-height: 100vh; }
+    header { background: linear-gradient(135deg, #1a1f2e 0%, #2d3748 100%); border-bottom: 1px solid #2d3748; padding: 1.5rem 2rem; text-align: center; }
+    header h1 { font-size: 1.8rem; color: #63b3ed; }
+    header .subtitle { color: #718096; font-size: 0.9rem; margin-top: 0.3rem; }
+    main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+    .card { background: #1a1f2e; border: 1px solid #2d3748; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .card h2 { font-size: 1.1rem; color: #63b3ed; margin-bottom: 1rem; }
+    .card h3 { font-size: 0.95rem; color: #a0aec0; margin: 1rem 0 0.5rem; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 0.85rem; color: #a0aec0; margin-bottom: 0.4rem; }
+    .form-group input, .form-group textarea { width: 100%; background: #0f1117; border: 1px solid #2d3748; border-radius: 8px; color: #e2e8f0; padding: 0.6rem 0.8rem; font-size: 0.9rem; resize: vertical; }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #63b3ed; }
+    .btn { padding: 0.6rem 1.2rem; border-radius: 8px; border: none; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: opacity 0.2s; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-primary { background: #3182ce; color: #fff; }
+    .btn-primary:hover:not(:disabled) { background: #2b6cb0; }
+    .btn-secondary { background: #2d3748; color: #e2e8f0; }
+    .btn-secondary:hover:not(:disabled) { background: #4a5568; }
+    .error { color: #fc8181; font-size: 0.85rem; margin-top: 0.8rem; }
+    .hidden { display: none !important; }
+    .loading { color: #68d391; font-size: 0.9rem; margin-top: 0.8rem; }
+    .hint { color: #718096; font-size: 0.82rem; margin-bottom: 1rem; }
+    .workspace-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+    .status-badge { padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+    .status-needs_clarification { background: #744210; color: #fbd38d; }
+    .status-ready { background: #1c4532; color: #68d391; }
+    .table-wrap { overflow-x: auto; }
+    .req-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    .req-table th { text-align: left; padding: 0.5rem 0.7rem; background: #0f1117; color: #718096; border-bottom: 1px solid #2d3748; white-space: nowrap; }
+    .req-table td { padding: 0.5rem 0.7rem; border-bottom: 1px solid #1a2535; vertical-align: top; }
+    .req-table tr:hover td { background: #1e2436; }
+    .fit { font-size: 0.78rem; color: #a0aec0; max-width: 200px; }
+    .type-badge { background: #2d3748; border-radius: 4px; padding: 0.1rem 0.4rem; font-size: 0.75rem; white-space: nowrap; color: #90cdf4; }
+    .priority-high td { border-left: 3px solid #fc8181; }
+    .priority-medium td { border-left: 3px solid #f6ad55; }
+    .priority-low td { border-left: 3px solid #68d391; }
+    .question-item { border: 1px solid #2d3748; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+    .q-header { display: flex; gap: 0.6rem; align-items: center; margin-bottom: 0.5rem; }
+    .q-id { font-weight: 700; color: #63b3ed; font-size: 0.85rem; }
+    .q-ref { color: #718096; font-size: 0.8rem; }
+    .priority-badge { padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.72rem; font-weight: 700; }
+    .pb-BLOCKER { background: #742a2a; color: #fc8181; }
+    .pb-HIGH { background: #744210; color: #fbd38d; }
+    .pb-MEDIUM { background: #1a365d; color: #90cdf4; }
+    .pb-LOW { background: #1c4532; color: #68d391; }
+    .q-text { margin-bottom: 0.4rem; }
+    .q-why { color: #a0aec0; font-size: 0.82rem; margin-bottom: 0.3rem; }
+    .q-options { color: #718096; font-size: 0.8rem; margin-bottom: 0.5rem; }
+    .q-answer { width: 100%; background: #0f1117; border: 1px solid #2d3748; border-radius: 6px; color: #e2e8f0; padding: 0.5rem; font-size: 0.85rem; resize: vertical; margin-top: 0.4rem; }
+    .quality-section ul { list-style: none; }
+    .quality-section li { padding: 0.4rem 0; border-bottom: 1px solid #1a2535; font-size: 0.85rem; color: #a0aec0; }
+    .actions { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+    .summary { color: #a0aec0; font-size: 0.85rem; margin-bottom: 1rem; }
+    .download-bar { margin-bottom: 1rem; }
+    .json-preview { background: #0a0d14; border: 1px solid #2d3748; border-radius: 8px; padding: 1rem; font-size: 0.75rem; color: #68d391; overflow-x: auto; max-height: 400px; overflow-y: auto; }
+  </style>
 </head>
 <body>
-  <div id="app"></div>
-  <script type="module" src="src/main.js"></script>
+  <header>
+    <h1>🤖 AI-ba-agent</h1>
+    <p class="subtitle">Бизнес-аналитик · Корпоративный архитектор · Volere / EARS / BABOK</p>
+  </header>
+  <main id="app"></main>
+
+  <script>
+    const API_BASE = 'http://' + window.location.hostname + ':8000/api/v1';
+
+    let state = { sessionId: null, requirements: [], questions: [], status: null, qualityCheck: null, projectName: '' };
+
+    async function apiCall(path, body) {
+      const res = await fetch(API_BASE + path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status + ': ' + await res.text());
+      return res.json();
+    }
+
+    function statusLabel(s) {
+      return s === 'needs_clarification' ? 'Требуют уточнения' : s === 'ready' ? 'Готово к финализации' : (s || '');
+    }
+
+    function renderInput() {
+      return `
+        <section class="card">
+          <h2>Введите исходные данные</h2>
+          <div class="form-group">
+            <label>Название проекта</label>
+            <input id="project-name" type="text" placeholder="Например: CRM-система" />
+          </div>
+          <div class="form-group">
+            <label>Текст (протокол встречи, письмо, интервью с заказчиком)</label>
+            <textarea id="source-text" rows="12" placeholder="Вставьте неструктурированный текст с бизнес-потребностями заказчика..."></textarea>
+          </div>
+          <button id="btn-analyze" class="btn btn-primary">🔍 Извлечь требования</button>
+          <div id="error-msg" class="error hidden"></div>
+          <div id="loading" class="loading hidden">⏳ Анализ... это может занять 1-2 минуты</div>
+        </section>`;
+    }
+
+    function renderRequirements() {
+      return `
+        <section class="card">
+          <h2>Требования (${state.requirements.length})</h2>
+          <div class="table-wrap">
+            <table class="req-table">
+              <thead><tr><th>ID</th><th>Тип</th><th>Описание (EARS)</th><th>Fit Criterion</th><th>Приоритет</th><th>Статус</th></tr></thead>
+              <tbody>
+                ${state.requirements.map(r => `
+                  <tr class="priority-${r.priority}">
+                    <td><code>${r.req_id}</code></td>
+                    <td><span class="type-badge">${r.req_type}</span></td>
+                    <td>${r.description}</td>
+                    <td class="fit">${r.fit_criterion || '—'}</td>
+                    <td>${r.priority || 'tbd'}</td>
+                    <td>${r.status}</td>
+                  </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+        </section>`;
+    }
+
+    function renderQuestions() {
+      if (!state.questions.length) return '';
+      return `
+        <section class="card">
+          <h2>❓ Уточняющие вопросы (${state.questions.length})</h2>
+          <p class="hint">Ответьте на вопросы для уточнения требований. Можно пропустить необязательные.</p>
+          ${state.questions.map(q => `
+            <div class="question-item">
+              <div class="q-header">
+                <span class="q-id">${q.id}</span>
+                <span class="priority-badge pb-${q.priority}">${q.priority}</span>
+                <span class="q-ref">→ ${q.ref}</span>
+              </div>
+              <p class="q-text">${q.text}</p>
+              ${q.why ? `<p class="q-why"><em>Почему важно:</em> ${q.why}</p>` : ''}
+              ${q.options && q.options.length ? `<p class="q-options"><em>Варианты:</em> ${q.options.join(' | ')}</p>` : ''}
+              <textarea class="q-answer" data-qid="${q.id}" rows="2" placeholder="Ваш ответ..."></textarea>
+            </div>`).join('')}
+          <button id="btn-clarify" class="btn btn-secondary">✅ Применить ответы</button>
+        </section>`;
+    }
+
+    function renderQuality() {
+      const q = state.qualityCheck || {};
+      const issues = q.quality_issues || [];
+      const gaps = q.gaps || [];
+      const conflicts = q.conflicts || [];
+      if (!issues.length && !gaps.length && !conflicts.length) return '';
+      return `
+        <section class="card quality-section">
+          <h2>🔍 Качество требований (BABOK)</h2>
+          ${issues.length ? `<h3>Нарушения (${issues.length})</h3><ul>${issues.map(i => `<li><code>${i.req_id}</code> · <strong>${i.attribute}</strong>: ${i.issue}</li>`).join('')}</ul>` : ''}
+          ${conflicts.length ? `<h3>Конфликты</h3><ul>${conflicts.map(c => `<li>${(c.req_ids||[]).join(', ')} — ${c.description}</li>`).join('')}</ul>` : ''}
+          ${gaps.length ? `<h3>Пробелы в покрытии</h3><ul>${gaps.map(g => `<li>${g}</li>`).join('')}</ul>` : ''}
+        </section>`;
+    }
+
+    function renderWorkspace() {
+      return `
+        <div>
+          <div class="workspace-header">
+            <button id="btn-reset" class="btn btn-secondary">← Новый анализ</button>
+            <span class="status-badge status-${state.status}">${statusLabel(state.status)}</span>
+          </div>
+          ${renderRequirements()}
+          ${renderQuestions()}
+          ${renderQuality()}
+          <div class="actions">
+            <button id="btn-finalize" class="btn btn-primary" ${state.status === 'needs_clarification' ? 'title="Ответьте на вопросы перед финализацией"' : ''}>
+              📄 Сформировать Volere JSON
+            </button>
+          </div>
+          <div id="final-output"></div>
+          <div id="error-msg" class="error hidden"></div>
+        </div>`;
+    }
+
+    function render() {
+      document.getElementById('app').innerHTML = state.sessionId ? renderWorkspace() : renderInput();
+      bindEvents();
+    }
+
+    function showError(msg) {
+      const el = document.getElementById('error-msg');
+      if (el) { el.textContent = msg; el.classList.remove('hidden'); }
+    }
+
+    function bindEvents() {
+      document.getElementById('btn-analyze')?.addEventListener('click', async () => {
+        const text = document.getElementById('source-text').value.trim();
+        const projectName = document.getElementById('project-name').value.trim() || 'tbd';
+        if (!text) { showError('Введите текст для анализа'); return; }
+        document.getElementById('btn-analyze').disabled = true;
+        document.getElementById('loading').classList.remove('hidden');
+        document.getElementById('error-msg').classList.add('hidden');
+        try {
+          const res = await apiCall('/analyze', { text, project_name: projectName });
+          state = { sessionId: res.session_id, requirements: res.requirements, questions: res.questions, status: res.status, qualityCheck: res.quality_check, projectName };
+          render();
+        } catch(e) {
+          showError('Ошибка: ' + e.message);
+          document.getElementById('btn-analyze').disabled = false;
+          document.getElementById('loading').classList.add('hidden');
+        }
+      });
+
+      document.getElementById('btn-reset')?.addEventListener('click', () => {
+        state = { sessionId: null, requirements: [], questions: [], status: null, qualityCheck: null };
+        render();
+      });
+
+      document.getElementById('btn-clarify')?.addEventListener('click', async () => {
+        const answers = state.questions.map(q => {
+          const a = document.querySelector(`.q-answer[data-qid="${q.id}"]`)?.value?.trim();
+          return a ? `${q.id}: ${a}` : null;
+        }).filter(Boolean).join('\n');
+        if (!answers) { showError('Введите хотя бы один ответ'); return; }
+        document.getElementById('btn-clarify').disabled = true;
+        try {
+          const res = await apiCall('/clarify', { session_id: state.sessionId, answers });
+          state.requirements = res.requirements;
+          state.questions = res.questions;
+          state.status = res.status;
+          state.qualityCheck = res.quality_check;
+          render();
+        } catch(e) {
+          showError('Ошибка: ' + e.message);
+          document.getElementById('btn-clarify').disabled = false;
+        }
+      });
+
+      document.getElementById('btn-finalize')?.addEventListener('click', async () => {
+        document.getElementById('btn-finalize').disabled = true;
+        try {
+          const res = await apiCall('/finalize', { session_id: state.sessionId });
+          const out = document.getElementById('final-output');
+          const jsonStr = JSON.stringify(res.volere_json, null, 2);
+          out.innerHTML = `
+            <section class="card">
+              <h2>✅ Volere JSON сформирован</h2>
+              <div class="summary">
+                Требований: <strong>${res.summary.total}</strong> &nbsp;|&nbsp;
+                Открытых вопросов: <strong>${res.summary.open_questions}</strong> &nbsp;|&nbsp;
+                Проблем качества: <strong>${res.summary.quality_issues}</strong>
+              </div>
+              <div class="download-bar">
+                <button id="btn-download" class="btn btn-primary">⬇ Скачать JSON</button>
+              </div>
+              <pre class="json-preview">${jsonStr.replace(/</g,'&lt;')}</pre>
+            </section>`;
+          document.getElementById('btn-download').addEventListener('click', () => {
+            const blob = new Blob([jsonStr], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'requirements_' + (state.projectName || state.sessionId.slice(0,8)) + '.json';
+            a.click();
+          });
+        } catch(e) {
+          showError('Ошибка: ' + e.message);
+          document.getElementById('btn-finalize').disabled = false;
+        }
+      });
+    }
+
+    render();
+  </script>
 </body>
 </html>
