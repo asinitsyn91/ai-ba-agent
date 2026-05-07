@@ -28,13 +28,45 @@ def _call_llm(prompt: str) -> str:
 
 
 def _parse_json(raw: str) -> Any:
-    """Extract JSON from LLM response (may contain markdown fences)."""
+    """Extract JSON from LLM response robustly (handles markdown fences, extra text)."""
     raw = raw.strip()
-    if raw.startswith("```"):
-        lines = raw.split("\n")
-        # skip first and last fence lines
-        inner = "\n".join(lines[1:-1]) if lines[-1].strip() == "```" else "\n".join(lines[1:])
-        raw = inner.strip()
+    # Strip markdown fences
+    if "```" in raw:
+        import re
+        m = re.search(r'```(?:json)?\s*([\s\S]*?)```', raw)
+        if m:
+            raw = m.group(1).strip()
+    # Find first JSON object or array
+    for start_char, end_char in [('{', '}'), ('[', ']')]:
+        start = raw.find(start_char)
+        if start != -1:
+            # Find matching closing bracket
+            depth = 0
+            in_str = False
+            escape = False
+            for i, ch in enumerate(raw[start:], start):
+                if escape:
+                    escape = False
+                    continue
+                if ch == '\\' and in_str:
+                    escape = True
+                    continue
+                if ch == '"' and not escape:
+                    in_str = not in_str
+                    continue
+                if in_str:
+                    continue
+                if ch == start_char:
+                    depth += 1
+                elif ch == end_char:
+                    depth -= 1
+                    if depth == 0:
+                        candidate = raw[start:i+1]
+                        try:
+                            return json.loads(candidate)
+                        except json.JSONDecodeError:
+                            break
+    # Last resort
     return json.loads(raw)
 
 
