@@ -1,0 +1,3054 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/volere-requirements-specification.schema.json",
+  "title": "Volere Requirements Specification",
+  "description": "Strict JSON Schema for a Volere-style requirements specification document.",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "stringList": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "namedRef": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "ref": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "ref",
+        "notes"
+      ]
+    },
+    "historyEntry": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "change": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "date",
+        "change",
+        "author"
+      ]
+    },
+    "goal": {
+      "type": "object",
+      "properties": {
+        "goal_id": {
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "advantage": {
+          "type": "string"
+        },
+        "measurement": {
+          "type": "string"
+        },
+        "goal_type": {
+          "type": "string",
+          "enum": [
+            "service",
+            "revenue",
+            "legal",
+            "other"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "goal_id",
+        "purpose",
+        "advantage",
+        "measurement",
+        "goal_type"
+      ]
+    },
+    "reviewCheckpoint": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "deliverables": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "description",
+        "deliverables"
+      ]
+    },
+    "stakeholder": {
+      "type": "object",
+      "properties": {
+        "stakeholder_id": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "knowledge_needed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "degree_of_involvement": {
+          "type": "string"
+        },
+        "degree_of_influence": {
+          "type": "string"
+        },
+        "conflict_resolution_notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "stakeholder_id",
+        "role",
+        "name",
+        "organization",
+        "knowledge_needed",
+        "degree_of_involvement",
+        "degree_of_influence",
+        "conflict_resolution_notes"
+      ]
+    },
+    "userCharacteristics": {
+      "type": "object",
+      "properties": {
+        "physical_abilities": {
+          "type": "string"
+        },
+        "intellectual_abilities": {
+          "type": "string"
+        },
+        "attitude_toward_job": {
+          "type": "string"
+        },
+        "attitude_toward_technology": {
+          "type": "string"
+        },
+        "physical_location": {
+          "type": "string"
+        },
+        "education": {
+          "type": "string"
+        },
+        "linguistic_skills": {
+          "type": "string"
+        },
+        "age_group": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "string"
+        },
+        "ethnic_group": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "physical_abilities",
+        "intellectual_abilities",
+        "attitude_toward_job",
+        "attitude_toward_technology",
+        "physical_location",
+        "education",
+        "linguistic_skills",
+        "age_group",
+        "gender",
+        "ethnic_group"
+      ]
+    },
+    "handsOnUser": {
+      "type": "object",
+      "properties": {
+        "user_category": {
+          "type": "string"
+        },
+        "user_role": {
+          "type": "string"
+        },
+        "subject_matter_experience": {
+          "type": "string",
+          "enum": [
+            "novice",
+            "journeyman",
+            "master",
+            "unknown",
+            "n/a"
+          ]
+        },
+        "technology_experience": {
+          "type": "string",
+          "enum": [
+            "novice",
+            "journeyman",
+            "master",
+            "unknown",
+            "n/a"
+          ]
+        },
+        "other_characteristics": {
+          "$ref": "#/$defs/userCharacteristics"
+        },
+        "priority": {
+          "type": "string",
+          "enum": [
+            "key",
+            "secondary",
+            "unimportant",
+            "unknown"
+          ]
+        },
+        "percentage_of_user_base": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "participation_needed": {
+          "type": "string"
+        },
+        "participation_time_estimate": {
+          "type": "string"
+        },
+        "knowledge_contribution": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "is_maintenance_user": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "user_category",
+        "user_role",
+        "subject_matter_experience",
+        "technology_experience",
+        "other_characteristics",
+        "priority",
+        "percentage_of_user_base",
+        "participation_needed",
+        "participation_time_estimate",
+        "knowledge_contribution",
+        "is_maintenance_user"
+      ]
+    },
+    "persona": {
+      "type": "object",
+      "properties": {
+        "persona_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "age": {
+          "type": "string"
+        },
+        "job": {
+          "type": "string"
+        },
+        "family": {
+          "type": "string"
+        },
+        "hobbies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "location": {
+          "type": "string"
+        },
+        "likes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dislikes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "attitude_to_technology": {
+          "type": "string"
+        },
+        "attitude_to_money": {
+          "type": "string"
+        },
+        "photo_or_avatar": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "persona_id",
+        "name",
+        "age",
+        "job",
+        "family",
+        "hobbies",
+        "location",
+        "likes",
+        "dislikes",
+        "attitude_to_technology",
+        "attitude_to_money",
+        "photo_or_avatar"
+      ]
+    },
+    "constraintRequirement": {
+      "type": "object",
+      "properties": {
+        "requirement_id": {
+          "type": "string"
+        },
+        "volere_requirement_type": {
+          "type": "string",
+          "enum": [
+            "constraint"
+          ]
+        },
+        "event_buc_puc_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "type": "string"
+        },
+        "rationale": {
+          "type": "string"
+        },
+        "originator": {
+          "type": "string"
+        },
+        "fit_criterion": {
+          "type": "string"
+        },
+        "customer_satisfaction": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "customer_dissatisfaction": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "supporting_materials": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/historyEntry"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "requirement_id",
+        "volere_requirement_type",
+        "event_buc_puc_refs",
+        "description",
+        "rationale",
+        "originator",
+        "fit_criterion",
+        "customer_satisfaction",
+        "customer_dissatisfaction",
+        "dependencies",
+        "conflicts",
+        "supporting_materials",
+        "history"
+      ]
+    },
+    "atomicRequirement": {
+      "type": "object",
+      "properties": {
+        "requirement_id": {
+          "type": "string"
+        },
+        "volere_requirement_type": {
+          "type": "string",
+          "enum": [
+            "functional",
+            "look_and_feel",
+            "usability_and_humanity",
+            "performance",
+            "operational_and_environmental",
+            "maintainability_and_support",
+            "security",
+            "cultural",
+            "legal",
+            "constraint"
+          ]
+        },
+        "event_buc_puc_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "type": "string"
+        },
+        "rationale": {
+          "type": "string"
+        },
+        "originator": {
+          "type": "string"
+        },
+        "fit_criterion": {
+          "type": "string"
+        },
+        "customer_satisfaction": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "customer_dissatisfaction": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "supporting_materials": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/historyEntry"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "requirement_id",
+        "volere_requirement_type",
+        "event_buc_puc_refs",
+        "description",
+        "rationale",
+        "originator",
+        "fit_criterion",
+        "customer_satisfaction",
+        "customer_dissatisfaction",
+        "dependencies",
+        "conflicts",
+        "supporting_materials",
+        "history"
+      ]
+    },
+    "glossaryEntry": {
+      "type": "object",
+      "properties": {
+        "term": {
+          "type": "string"
+        },
+        "definition": {
+          "type": "string"
+        },
+        "acronym": {
+          "type": "string"
+        },
+        "stakeholder_agreement": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "term",
+        "definition",
+        "acronym",
+        "stakeholder_agreement",
+        "source"
+      ]
+    },
+    "fact": {
+      "type": "object",
+      "properties": {
+        "fact_id": {
+          "type": "string"
+        },
+        "statement": {
+          "type": "string"
+        },
+        "impact": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "fact_id",
+        "statement",
+        "impact"
+      ]
+    },
+    "businessRule": {
+      "type": "object",
+      "properties": {
+        "rule_id": {
+          "type": "string"
+        },
+        "statement": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "authority": {
+          "type": "string"
+        },
+        "impact": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "rule_id",
+        "statement",
+        "reason",
+        "authority",
+        "impact"
+      ]
+    },
+    "assumption": {
+      "type": "object",
+      "properties": {
+        "assumption_id": {
+          "type": "string"
+        },
+        "statement": {
+          "type": "string"
+        },
+        "effect_if_false": {
+          "type": "string"
+        },
+        "probability": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "unknown"
+          ]
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "assumption_id",
+        "statement",
+        "effect_if_false",
+        "probability",
+        "alternatives"
+      ]
+    },
+    "componentRef": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "type",
+        "description",
+        "version"
+      ]
+    },
+    "interfaceRef": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "protocol_or_format": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "type",
+        "description",
+        "inputs",
+        "outputs",
+        "protocol_or_format"
+      ]
+    },
+    "partnerApplication": {
+      "type": "object",
+      "properties": {
+        "application_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "interfaces": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/interfaceRef"
+          }
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "application_id",
+        "name",
+        "type",
+        "description",
+        "interfaces",
+        "notes"
+      ]
+    },
+    "otsProduct": {
+      "type": "object",
+      "properties": {
+        "product_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "vendor": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "mandated_usage": {
+          "type": "string"
+        },
+        "relevant_capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "known_mismatches": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "interfaces": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/interfaceRef"
+          }
+        },
+        "documentation_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "product_id",
+        "name",
+        "vendor",
+        "type",
+        "mandated_usage",
+        "relevant_capabilities",
+        "known_mismatches",
+        "interfaces",
+        "documentation_refs"
+      ]
+    },
+    "scheduleConstraint": {
+      "type": "object",
+      "properties": {
+        "constraint_id": {
+          "type": "string"
+        },
+        "deadline": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "impact_if_missed": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "constraint_id",
+        "deadline",
+        "reason",
+        "impact_if_missed"
+      ]
+    },
+    "enterpriseConstraint": {
+      "type": "object",
+      "properties": {
+        "constraint_id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "constraint_id",
+        "description",
+        "source",
+        "notes"
+      ]
+    },
+    "adjacentSystem": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "relationship": {
+          "type": "string"
+        },
+        "inputs_to_work": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "outputs_from_work": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "type",
+        "relationship",
+        "inputs_to_work",
+        "outputs_from_work"
+      ]
+    },
+    "businessEvent": {
+      "type": "object",
+      "properties": {
+        "event_number": {
+          "type": "string"
+        },
+        "event_name": {
+          "type": "string"
+        },
+        "triggering_input": {
+          "type": "string"
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "buc_summary": {
+          "type": "string"
+        },
+        "relevant_business_data_classes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "event_number",
+        "event_name",
+        "triggering_input",
+        "outputs",
+        "buc_summary",
+        "relevant_business_data_classes"
+      ]
+    },
+    "businessUseCase": {
+      "type": "object",
+      "properties": {
+        "buc_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "trigger_event_ref": {
+          "type": "string"
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "scenario": {
+          "type": "string"
+        },
+        "models": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "buc_id",
+        "name",
+        "trigger_event_ref",
+        "inputs",
+        "outputs",
+        "scenario",
+        "models",
+        "notes"
+      ]
+    },
+    "entity": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "relationships": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "description",
+        "attributes",
+        "relationships"
+      ]
+    },
+    "dictionaryEntry": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "content",
+        "type",
+        "format",
+        "source",
+        "notes"
+      ]
+    },
+    "actor": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "type",
+        "description"
+      ]
+    },
+    "productUseCaseTableEntry": {
+      "type": "object",
+      "properties": {
+        "puc_number": {
+          "type": "string"
+        },
+        "puc_name": {
+          "type": "string"
+        },
+        "actors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "related_buc_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "puc_number",
+        "puc_name",
+        "actors",
+        "inputs",
+        "outputs",
+        "related_buc_refs"
+      ]
+    },
+    "productUseCase": {
+      "type": "object",
+      "properties": {
+        "puc_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "scenario": {
+          "type": "string"
+        },
+        "exceptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "prototypes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "models": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "puc_id",
+        "name",
+        "scenario",
+        "exceptions",
+        "alternatives",
+        "prototypes",
+        "models"
+      ]
+    },
+    "openIssue": {
+      "type": "object",
+      "properties": {
+        "issue_number": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "affected_items": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "stakeholders_involved": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "action": {
+          "type": "string"
+        },
+        "resolution": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "issue_number",
+        "summary",
+        "affected_items",
+        "stakeholders_involved",
+        "action",
+        "resolution"
+      ]
+    },
+    "readyMadeProduct": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "survey_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "approx_cost": {
+          "type": "string"
+        },
+        "availability": {
+          "type": "string"
+        },
+        "time_to_implement": {
+          "type": "string"
+        },
+        "fit_notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "description",
+        "survey_refs",
+        "approx_cost",
+        "availability",
+        "time_to_implement",
+        "fit_notes"
+      ]
+    },
+    "reusableComponent": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "fit_notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "source",
+        "description",
+        "fit_notes"
+      ]
+    },
+    "copyableProduct": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "legal_basis": {
+          "type": "string"
+        },
+        "modifiable": {
+          "type": "boolean"
+        },
+        "fit_notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "owner",
+        "legal_basis",
+        "modifiable",
+        "fit_notes"
+      ]
+    },
+    "problem": {
+      "type": "object",
+      "properties": {
+        "problem_id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "impact": {
+          "type": "string"
+        },
+        "precautions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "problem_id",
+        "description",
+        "impact",
+        "precautions"
+      ]
+    },
+    "limitation": {
+      "type": "object",
+      "properties": {
+        "limitation_id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "impact": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "limitation_id",
+        "description",
+        "impact"
+      ]
+    },
+    "estimate": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "units": {
+          "type": "string"
+        },
+        "basis": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "value",
+        "units",
+        "basis"
+      ]
+    },
+    "developmentPhase": {
+      "type": "object",
+      "properties": {
+        "phase_name": {
+          "type": "string"
+        },
+        "value_or_benefit": {
+          "type": "string"
+        },
+        "required_operational_date": {
+          "type": "string"
+        },
+        "operating_environment_components": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "functional_requirements_included": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "non_functional_requirements_included": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "phase_name",
+        "value_or_benefit",
+        "required_operational_date",
+        "operating_environment_components",
+        "functional_requirements_included",
+        "non_functional_requirements_included"
+      ]
+    },
+    "migrationDataItem": {
+      "type": "object",
+      "properties": {
+        "data_item": {
+          "type": "string"
+        },
+        "current_technology": {
+          "type": "string"
+        },
+        "new_technology": {
+          "type": "string"
+        },
+        "translation_tasks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "foreseeable_problems": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "data_item",
+        "current_technology",
+        "new_technology",
+        "translation_tasks",
+        "foreseeable_problems"
+      ]
+    },
+    "risk": {
+      "type": "object",
+      "properties": {
+        "risk_id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "probability": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "unknown"
+          ]
+        },
+        "impact_on_schedule": {
+          "type": "string"
+        },
+        "impact_on_cost": {
+          "type": "string"
+        },
+        "contingency_plan": {
+          "type": "string"
+        },
+        "related_requirements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "risk_id",
+        "description",
+        "probability",
+        "impact_on_schedule",
+        "impact_on_cost",
+        "contingency_plan",
+        "related_requirements"
+      ]
+    },
+    "waitingRoomItem": {
+      "type": "object",
+      "properties": {
+        "item_id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "reason_deferred": {
+          "type": "string"
+        },
+        "revisit_condition": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "item_id",
+        "description",
+        "reason_deferred",
+        "revisit_condition"
+      ]
+    },
+    "solutionIdea": {
+      "type": "object",
+      "properties": {
+        "idea_id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "candidate",
+            "accepted",
+            "rejected",
+            "deferred",
+            "unknown"
+          ]
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "idea_id",
+        "description",
+        "status",
+        "notes"
+      ]
+    }
+  },
+  "properties": {
+    "document_meta": {
+      "type": "object",
+      "properties": {
+        "template_name": {
+          "type": "string",
+          "const": "Volere Requirements Specification Template"
+        },
+        "template_edition": {
+          "type": "string",
+          "const": "16-2012"
+        },
+        "project_name": {
+          "type": "string"
+        },
+        "document_id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "date_created": {
+          "type": "string"
+        },
+        "last_updated": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "template_name",
+        "template_edition",
+        "project_name",
+        "document_id",
+        "version",
+        "status",
+        "authors",
+        "date_created",
+        "last_updated",
+        "notes"
+      ]
+    },
+    "project_drivers": {
+      "type": "object",
+      "properties": {
+        "purpose_of_project": {
+          "type": "object",
+          "properties": {
+            "user_business_background": {
+              "type": "object",
+              "properties": {
+                "summary": {
+                  "type": "string"
+                },
+                "context": {
+                  "type": "string"
+                },
+                "business_problem_or_opportunity": {
+                  "type": "string"
+                },
+                "supporting_materials": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "summary",
+                "context",
+                "business_problem_or_opportunity",
+                "supporting_materials"
+              ]
+            },
+            "goals_of_project": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/goal"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "user_business_background",
+            "goals_of_project"
+          ]
+        },
+        "stakeholders": {
+          "type": "object",
+          "properties": {
+            "client": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "organization": {
+                  "type": "string"
+                },
+                "responsibilities": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "review_checkpoints": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/reviewCheckpoint"
+                  }
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "name",
+                "role",
+                "organization",
+                "responsibilities",
+                "review_checkpoints"
+              ]
+            },
+            "customer": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "organization": {
+                  "type": "string"
+                },
+                "responsibilities": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "review_checkpoints": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/reviewCheckpoint"
+                  }
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "name",
+                "role",
+                "organization",
+                "responsibilities",
+                "review_checkpoints"
+              ]
+            },
+            "other_stakeholders": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/stakeholder"
+              }
+            },
+            "hands_on_users": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/handsOnUser"
+              }
+            },
+            "personas": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/persona"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "client",
+            "customer",
+            "other_stakeholders",
+            "hands_on_users",
+            "personas"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "purpose_of_project",
+        "stakeholders"
+      ]
+    },
+    "project_constraints": {
+      "type": "object",
+      "properties": {
+        "mandated_constraints": {
+          "type": "object",
+          "properties": {
+            "solution_constraints": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/constraintRequirement"
+              }
+            },
+            "implementation_environment_of_current_system": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "hardware_components": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/componentRef"
+                  }
+                },
+                "software_components": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/componentRef"
+                  }
+                },
+                "devices": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/componentRef"
+                  }
+                },
+                "organization_context": {
+                  "type": "string"
+                },
+                "diagrams": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "description",
+                "hardware_components",
+                "software_components",
+                "devices",
+                "organization_context",
+                "diagrams"
+              ]
+            },
+            "partner_or_collaborative_applications": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/partnerApplication"
+              }
+            },
+            "off_the_shelf_software": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/otsProduct"
+              }
+            },
+            "anticipated_workplace_environment": {
+              "type": "object",
+              "properties": {
+                "physical_environment": {
+                  "type": "string"
+                },
+                "social_environment": {
+                  "type": "string"
+                },
+                "cultural_environment": {
+                  "type": "string"
+                },
+                "constraints": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "supporting_materials": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "physical_environment",
+                "social_environment",
+                "cultural_environment",
+                "constraints",
+                "supporting_materials"
+              ]
+            },
+            "schedule_constraints": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/scheduleConstraint"
+              }
+            },
+            "budget_constraints": {
+              "type": "object",
+              "properties": {
+                "budget_amount": {
+                  "type": "string"
+                },
+                "currency": {
+                  "type": "string"
+                },
+                "resource_limits": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "funding_source": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "budget_amount",
+                "currency",
+                "resource_limits",
+                "funding_source"
+              ]
+            },
+            "enterprise_constraints": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/enterpriseConstraint"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "solution_constraints",
+            "implementation_environment_of_current_system",
+            "partner_or_collaborative_applications",
+            "off_the_shelf_software",
+            "anticipated_workplace_environment",
+            "schedule_constraints",
+            "budget_constraints",
+            "enterprise_constraints"
+          ]
+        },
+        "naming_conventions_and_terminology": {
+          "type": "object",
+          "properties": {
+            "glossary": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/glossaryEntry"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "glossary"
+          ]
+        },
+        "relevant_facts_and_assumptions": {
+          "type": "object",
+          "properties": {
+            "relevant_facts": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/fact"
+              }
+            },
+            "business_rules": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/businessRule"
+              }
+            },
+            "assumptions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/assumption"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "relevant_facts",
+            "business_rules",
+            "assumptions"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "mandated_constraints",
+        "naming_conventions_and_terminology",
+        "relevant_facts_and_assumptions"
+      ]
+    },
+    "functional_requirements": {
+      "type": "object",
+      "properties": {
+        "scope_of_work": {
+          "type": "object",
+          "properties": {
+            "current_situation": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "business_process_models": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "manual_processes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "automated_processes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "change_candidates": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "description",
+                "business_process_models",
+                "manual_processes",
+                "automated_processes",
+                "change_candidates"
+              ]
+            },
+            "context_of_work": {
+              "type": "object",
+              "properties": {
+                "work_context_summary": {
+                  "type": "string"
+                },
+                "adjacent_systems": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/adjacentSystem"
+                  }
+                },
+                "context_diagrams": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "work_context_summary",
+                "adjacent_systems",
+                "context_diagrams"
+              ]
+            },
+            "work_partitioning": {
+              "type": "object",
+              "properties": {
+                "business_events": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/businessEvent"
+                  }
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "business_events"
+              ]
+            },
+            "business_use_cases": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/businessUseCase"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "current_situation",
+            "context_of_work",
+            "work_partitioning",
+            "business_use_cases"
+          ]
+        },
+        "business_data_model_and_data_dictionary": {
+          "type": "object",
+          "properties": {
+            "business_data_model": {
+              "type": "object",
+              "properties": {
+                "entities_or_classes": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/entity"
+                  }
+                },
+                "models": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "entities_or_classes",
+                "models"
+              ]
+            },
+            "data_dictionary": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/dictionaryEntry"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "business_data_model",
+            "data_dictionary"
+          ]
+        },
+        "scope_of_product": {
+          "type": "object",
+          "properties": {
+            "product_boundary": {
+              "type": "object",
+              "properties": {
+                "summary": {
+                  "type": "string"
+                },
+                "actors": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/actor"
+                  }
+                },
+                "boundary_decisions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "use_case_diagrams": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "product_scope_diagrams": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "summary",
+                "actors",
+                "boundary_decisions",
+                "use_case_diagrams",
+                "product_scope_diagrams"
+              ]
+            },
+            "product_use_case_table": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/productUseCaseTableEntry"
+              }
+            },
+            "individual_product_use_cases": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/productUseCase"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "product_boundary",
+            "product_use_case_table",
+            "individual_product_use_cases"
+          ]
+        },
+        "atomic_functional_requirements": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "#/$defs/atomicRequirement"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "volere_requirement_type": {
+                    "const": "functional"
+                  }
+                },
+                "required": [
+                  "volere_requirement_type"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "scope_of_work",
+        "business_data_model_and_data_dictionary",
+        "scope_of_product",
+        "atomic_functional_requirements"
+      ]
+    },
+    "non_functional_requirements": {
+      "type": "object",
+      "properties": {
+        "look_and_feel_requirements": {
+          "type": "object",
+          "properties": {
+            "appearance_requirements": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/atomicRequirement"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "volere_requirement_type": {
+                        "const": "look_and_feel"
+                      }
+                    },
+                    "required": [
+                      "volere_requirement_type"
+                    ]
+                  }
+                ]
+              }
+            },
+            "style_requirements": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/atomicRequirement"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "volere_requirement_type": {
+                        "const": "look_and_feel"
+                      }
+                    },
+                    "required": [
+                      "volere_requirement_type"
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "appearance_requirements",
+            "style_requirements"
+          ]
+        },
+        "usability_and_humanity_requirements": {
+          "type": "object",
+          "properties": {
+            "ease_of_use_requirements": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/atomicRequirement"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "volere_requirement_type": {
+                        "const": "usability_and_humanity"
+                      }
+                    },
+                    "required": [
+                      "volere_requirement_type"
+                    ]
+                  }
+                ]
+              }
+            },
+            "personalization_and_internationalization_requirements": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/atomicRequirement"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "volere_requirement_type": {
+                        "const": "usability_and_humanity"
+                      }
+                    },
+                    "required": [
+                      "volere_requirement_type"
+                    ]
+                  }
+                ]
+              }
+            },
+            "learning_requirements": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/atomicRequirement"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "volere_requirement_type": {
+                        "const": "usability_and_humanity"
+                      }
+                    },
+                    "required": [
+                      "volere_requirement_type"
+                    ]
+                  }
+                ]
+              }
+            },
+            "understandability_and_politeness_requirements": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/atomicRequirement"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "volere_requirement_type": {
+                        "const": "usability_and_humanity"
+                      }
+                    },
+                    "required": [
+                      "volere_requirement_type"
+                    ]
+                  }
+                ]
+              }
+            },
+            "accessibility_requirements": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/atomicRequirement"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "volere_requirement_type": {
+                        "const": "usability_and_humanity"
+                      }
+                    },
+                    "required": [
+                      "volere_requirement_type"
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "ease_of_use_requirements",
+            "personalization_and_internationalization_requirements",
+            "learning_requirements",
+            "understandability_and_politeness_requirements",
+            "accessibility_requirements"
+          ]
+        },
+        "performance_requirements": {
+          "type": "object",
+          "properties": {
+            "speed_and_latency_requirements": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/atomicRequirement"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "volere_requirement_type": {
+                        "const": "performance"
+                      }
+                    },
+                    "required": [
+                      "volere_requirement_type"
+                    ]
+                  }
+                ]
+              }
+            },
+            "safety_critical_requirements": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/atomicRequirement"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "volere_requirement_type": {
+                        "const": "performance"
+                      }
+                    },
+                    "required": [
+                      "volere_requirement_type"
+                    ]
+                  }
+                ]
+              }
+            },
+            "precision_or_accuracy_requirements": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/atomicRequirement"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "volere_requirement_type": {
+                        "const": "performance"
+                      }
+                    },
+                    "required": [
+                      "volere_requirement_type"
+                    ]
+                  }
+                ]
+              }
+            },
+            "reliability_and_availability_requirements": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/atomicRequirement"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "volere_requirement_type": {
+                        "const": "performance"
+                      }
+                    },
+                    "required": [
+                      "volere_requirement_type"
+                    ]
+                  }
+                ]
+              }
+            },
+            "robustness_or_fault_tolerance_requirements": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/atomicRequirement"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "volere_requirement_type": {
+                        "const": "performance"
+                      }
+                    },
+                    "required": [
+                      "volere_requirement_type"
+                    ]
+                  }
+                ]
+              }
+            },
+            "capacity_requirements": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/atomicRequirement"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "volere_requirement_type": {
+                        "const": "performance"
+                      }
+                    },
+                    "required": [
+                      "volere_requirement_type"
+                    ]
+                  }
+                ]
+              }
+            },
+            "scalability_or_extensibility_requirements": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/atomicRequirement"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "volere_requirement_type": {
+                        "const": "performance"
+                      }
+                    },
+                    "required": [
+                      "volere_requirement_type"
+                    ]
+                  }
+                ]
+              }
+            },
+            "longevity_requirements": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/atomicRequirement"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "volere_requirement_type": {
+                        "const": "performance"
+                      }
+                    },
+                    "required": [
+                      "volere_requirement_type"
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "speed_and_latency_requirements",
+            "safety_critical_requirements",
+            "precision_or_accuracy_requirements",
+            "reliability_and_availability_requirements",
+            "robustness_or_fault_tolerance_requirements",
+            "capacity_requirements",
+            "scalability_or_extensibility_requirements",
+            "longevity_requirements"
+          ]
+        },
+        "operational_and_environmental_requirements": {
+          "type": "object",
+          "properties": {
+            "expected_physical_environment": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/atomicRequirement"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "volere_requirement_type": {
+                        "const": "operational_and_environmental"
+                      }
+                    },
+                    "required": [
+                      "volere_requirement_type"
+                    ]
+                  }
+                ]
+              }
+            },
+            "requirements_for_interfacing_with_adjacent_systems": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/atomicRequirement"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "volere_requirement_type": {
+                        "const": "operational_and_environmental"
+                      }
+                    },
+                    "required": [
+                      "volere_requirement_type"
+                    ]
+                  }
+                ]
+              }
+            },
+            "productization_requirements": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/atomicRequirement"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "volere_requirement_type": {
+                        "const": "operational_and_environmental"
+                      }
+                    },
+                    "required": [
+                      "volere_requirement_type"
+                    ]
+                  }
+                ]
+              }
+            },
+            "release_requirements": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/atomicRequirement"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "volere_requirement_type": {
+                        "const": "operational_and_environmental"
+                      }
+                    },
+                    "required": [
+                      "volere_requirement_type"
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "expected_physical_environment",
+            "requirements_for_interfacing_with_adjacent_systems",
+            "productization_requirements",
+            "release_requirements"
+          ]
+        },
+        "maintainability_and_support_requirements": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "#/$defs/atomicRequirement"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "volere_requirement_type": {
+                    "const": "maintainability_and_support"
+                  }
+                },
+                "required": [
+                  "volere_requirement_type"
+                ]
+              }
+            ]
+          }
+        },
+        "security_requirements": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "#/$defs/atomicRequirement"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "volere_requirement_type": {
+                    "const": "security"
+                  }
+                },
+                "required": [
+                  "volere_requirement_type"
+                ]
+              }
+            ]
+          }
+        },
+        "cultural_requirements": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "#/$defs/atomicRequirement"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "volere_requirement_type": {
+                    "const": "cultural"
+                  }
+                },
+                "required": [
+                  "volere_requirement_type"
+                ]
+              }
+            ]
+          }
+        },
+        "legal_requirements": {
+          "type": "object",
+          "properties": {
+            "legal_compliance_requirements": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/atomicRequirement"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "volere_requirement_type": {
+                        "const": "legal"
+                      }
+                    },
+                    "required": [
+                      "volere_requirement_type"
+                    ]
+                  }
+                ]
+              }
+            },
+            "standards_requirements": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/atomicRequirement"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "volere_requirement_type": {
+                        "const": "legal"
+                      }
+                    },
+                    "required": [
+                      "volere_requirement_type"
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "legal_compliance_requirements",
+            "standards_requirements"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "look_and_feel_requirements",
+        "usability_and_humanity_requirements",
+        "performance_requirements",
+        "operational_and_environmental_requirements",
+        "maintainability_and_support_requirements",
+        "security_requirements",
+        "cultural_requirements",
+        "legal_requirements"
+      ]
+    },
+    "project_issues": {
+      "type": "object",
+      "properties": {
+        "open_issues": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/openIssue"
+          }
+        },
+        "off_the_shelf_solutions": {
+          "type": "object",
+          "properties": {
+            "ready_made_products": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/readyMadeProduct"
+              }
+            },
+            "reusable_components": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/reusableComponent"
+              }
+            },
+            "products_that_can_be_copied": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/copyableProduct"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "ready_made_products",
+            "reusable_components",
+            "products_that_can_be_copied"
+          ]
+        },
+        "new_problems": {
+          "type": "object",
+          "properties": {
+            "effects_on_current_environment": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "should_not_do": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "models": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "description",
+                "should_not_do",
+                "models"
+              ]
+            },
+            "effects_on_installed_systems": {
+              "type": "object",
+              "properties": {
+                "interfaces": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/interfaceRef"
+                  }
+                },
+                "compatibility_notes": {
+                  "type": "string"
+                },
+                "models": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "interfaces",
+                "compatibility_notes",
+                "models"
+              ]
+            },
+            "potential_user_problems": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/problem"
+              }
+            },
+            "limitations_in_anticipated_implementation_environment": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/limitation"
+              }
+            },
+            "follow_up_problems": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/limitation"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "effects_on_current_environment",
+            "effects_on_installed_systems",
+            "potential_user_problems",
+            "limitations_in_anticipated_implementation_environment",
+            "follow_up_problems"
+          ]
+        },
+        "tasks": {
+          "type": "object",
+          "properties": {
+            "project_planning": {
+              "type": "object",
+              "properties": {
+                "lifecycle": {
+                  "type": "string"
+                },
+                "delivery_approach": {
+                  "type": "string"
+                },
+                "task_list": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "estimates": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/estimate"
+                  }
+                },
+                "agility_strategy": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "lifecycle",
+                "delivery_approach",
+                "task_list",
+                "estimates",
+                "agility_strategy"
+              ]
+            },
+            "planning_of_development_phases": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/developmentPhase"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "project_planning",
+            "planning_of_development_phases"
+          ]
+        },
+        "migration_to_new_product": {
+          "type": "object",
+          "properties": {
+            "requirements_for_migration": {
+              "type": "object",
+              "properties": {
+                "conversion_activities": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "implementation_timetable": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "phase_cross_references": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "conversion_activities",
+                "implementation_timetable",
+                "phase_cross_references"
+              ]
+            },
+            "data_to_be_modified_or_translated": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/migrationDataItem"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "requirements_for_migration",
+            "data_to_be_modified_or_translated"
+          ]
+        },
+        "risks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/risk"
+          }
+        },
+        "costs": {
+          "type": "object",
+          "properties": {
+            "estimated_money": {
+              "type": "string"
+            },
+            "estimated_effort": {
+              "type": "string"
+            },
+            "basis_of_estimate": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "related_metrics": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "estimated_money",
+            "estimated_effort",
+            "basis_of_estimate",
+            "related_metrics"
+          ]
+        },
+        "user_documentation_and_training": {
+          "type": "object",
+          "properties": {
+            "documents": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "training_needs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "delivery_format": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "notes": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "documents",
+            "training_needs",
+            "delivery_format",
+            "notes"
+          ]
+        },
+        "waiting_room": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/waitingRoomItem"
+          }
+        },
+        "ideas_for_solutions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/solutionIdea"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "open_issues",
+        "off_the_shelf_solutions",
+        "new_problems",
+        "tasks",
+        "migration_to_new_product",
+        "risks",
+        "costs",
+        "user_documentation_and_training",
+        "waiting_room",
+        "ideas_for_solutions"
+      ]
+    }
+  },
+  "required": [
+    "document_meta",
+    "project_drivers",
+    "project_constraints",
+    "functional_requirements",
+    "non_functional_requirements",
+    "project_issues"
+  ]
+}
