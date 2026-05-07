@@ -76,14 +76,20 @@ class PipelineService:
     def run_stage1(self, text: str) -> dict:
         prompt = STAGE1_EXTRACT_PROMPT.format(text=text)
         raw = _call_llm(prompt)
-        return _parse_json(raw)
+        result = _parse_json(raw)
+        if isinstance(result, list):
+            result = {"candidates": result, "language": "ru"}
+        return result
 
     def run_stage2(self, candidates: list) -> dict:
         prompt = STAGE2_CLASSIFY_PROMPT.format(
             candidates_json=json.dumps(candidates, ensure_ascii=False, indent=2)
         )
         raw = _call_llm(prompt)
-        return _parse_json(raw)
+        result = _parse_json(raw)
+        if isinstance(result, list):
+            result = {"classified": result}
+        return result
 
     def run_stage3(self, classified: list, original_text: str) -> dict:
         prompt = STAGE3_NORMALIZE_PROMPT.format(
@@ -91,14 +97,20 @@ class PipelineService:
             original_text=original_text,
         )
         raw = _call_llm(prompt)
-        return _parse_json(raw)
+        result = _parse_json(raw)
+        if isinstance(result, list):
+            result = {"requirements": result}
+        return result
 
     def run_stage4(self, requirements: list) -> dict:
         prompt = STAGE4_QUALITY_PROMPT.format(
             requirements_json=json.dumps(requirements, ensure_ascii=False, indent=2)
         )
         raw = _call_llm(prompt)
-        return _parse_json(raw)
+        result = _parse_json(raw)
+        if not isinstance(result, dict):
+            result = {"quality_issues": [], "conflicts": [], "gaps": []}
+        return result
 
     def run_stage5(self, requirements: list, quality_issues: dict) -> dict:
         prompt = STAGE5_QUESTIONS_PROMPT.format(
@@ -106,7 +118,10 @@ class PipelineService:
             quality_issues_json=json.dumps(quality_issues, ensure_ascii=False, indent=2),
         )
         raw = _call_llm(prompt)
-        return _parse_json(raw)
+        result = _parse_json(raw)
+        if isinstance(result, list):
+            result = {"questions": result}
+        return result
 
     def run_stage6(self, requirements: list, quality_issues: dict, project_name: str) -> dict:
         prompt = STAGE6_JSON_PROMPT.format(
@@ -115,7 +130,10 @@ class PipelineService:
             project_name=project_name,
         )
         raw = _call_llm(prompt)
-        return _parse_json(raw)
+        result = _parse_json(raw)
+        if not isinstance(result, dict):
+            result = {"error": "LLM returned unexpected format", "raw": str(result)}
+        return result
 
     def apply_clarifications(self, answers: str, requirements: list) -> list:
         prompt = CLARIFICATION_PROMPT.format(
@@ -123,16 +141,24 @@ class PipelineService:
             requirements_json=json.dumps(requirements, ensure_ascii=False, indent=2),
         )
         raw = _call_llm(prompt)
-        updated = _parse_json(raw)
+        try:
+            updated = _parse_json(raw)
+        except Exception:
+            logger.warning("apply_clarifications: failed to parse LLM response, returning original")
+            return requirements
+
+        # Normalize: LLM may return {"requirements": [...]} or a plain list
+        if isinstance(updated, dict):
+            updated = updated.get("requirements") or updated.get("updated") or []
+        if not isinstance(updated, list):
+            logger.warning("apply_clarifications: unexpected type %s, returning original", type(updated))
+            return requirements
+
         # Merge updated items back
-        updated_map = {r["req_id"]: r for r in updated}
-        merged = []
-        for req in requirements:
-            if req["req_id"] in updated_map:
-                merged.append(updated_map[req["req_id"]])
-            else:
-                merged.append(req)
-        return merged
+        updated_map = {r["req_id"]: r for r in updated if isinstance(r, dict) and "req_id" in r}
+        return [
+            updated_map.get(req["req_id"], req) for req in requirements
+        ]
 
     def run_full_pipeline(self, text: str, project_name: str = "tbd") -> dict:
         """Run stages 1-5. Stage 6 called separately after clarification."""

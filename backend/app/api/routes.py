@@ -1,4 +1,7 @@
+import logging
 from fastapi import APIRouter, HTTPException
+
+logger = logging.getLogger(__name__)
 from app.models.schemas import (
     AnalyzeRequest, ClarifyRequest, FinalizeRequest,
     PipelineResponse, FinalizeResponse
