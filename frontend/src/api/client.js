@@ -1,4 +1,4 @@
-const API_BASE = window.API_BASE || 'http://localhost:8000/api/v1';
+const API_BASE = window.API_BASE || `http://${window.location.hostname}:8000/api/v1`;
 
 export async function analyze(text, projectName = 'tbd') {
   const res = await fetch(`${API_BASE}/analyze`, {
